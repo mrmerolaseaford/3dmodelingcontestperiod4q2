@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Design Awards Showcase</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Modern CSS Reset */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Custom Properties */
+        :root {
+            /* Colors */
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --accent: #f59e0b;
+            --background: #030712;
+            --surface: #111827;
+            --surface-alt: #1f2937;
+            --text: #f9fafb;
+            --text-secondary: #9ca3af;
+            
+            /* Animations */
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        .hero {
+            background: linear-gradient(135deg, var(--surface) 0%, var(--background) 100%);
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .site-title {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .site-description {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        .nav-bar {
+            background: var(--surface);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-md);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-group {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            background: var(--surface-alt);
+            color: var(--text);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: var(--primary);
+        }
+
+        /* Gallery View */
+        .gallery-view {
+            padding: 2rem 0;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            border: 2px solid var(--primary);
+            border-radius: 9999px;
+            background: transparent;
+            color: var(--text);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 1rem;
+        }
+
+        .gallery-item {
+            background: var(--surface);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .gallery-content {
+            padding: 1.5rem;
+        }
+
+        .gallery-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .gallery-category {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .vote-btn {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0.5rem;
+            background: var(--primary);
+            color: var(--text);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .vote-btn:hover:not(:disabled) {
+            background: var(--primary-dark);
+        }
+
+        .vote-btn:disabled {
+            background: var(--text-secondary);
+            cursor: not-allowed;
+        }
+
+        /* Slideshow View */
+        .slideshow-view {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+        }
+
+        .slideshow-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 1600px;
+            text-align: center;
+        }
+
+        .slideshow-image {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .slideshow-info {
+            margin-top: 1rem;
+            color: var(--text);
+        }
+
+        .slideshow-controls {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            background: var(--surface);
+            padding: 1rem 2rem;
+            border-radius: 9999px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .slideshow-btn {
+            background: transparent;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .slideshow-btn:hover {
+            background: var(--primary);
+            transform: scale(1.1);
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 1rem;
+            margin: 2rem 0;
+            box-shadow: var(--shadow-lg);
+            display: none;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .admin-title {
+            font-size: 1.5rem;
+            color: var(--text);
+            margin: 0;
+        }
+
+        .admin-status {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            background: var(--surface-alt);
+        }
+
+        .admin-status.logged-in {
+            background: var(--primary);
+            color: var(--text);
+        }
+
+        .admin-tools {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .admin-input {
+            padding: 0.75rem;
+            border: 1px solid var(--text-secondary);
+            border-radius: 0.5rem;
+            background: var(--background);
+            color: var(--text);
+            font-size: 1rem;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .admin-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            background: var(--primary);
+            color: var(--text);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .admin-btn:hover {
+            transform: translateY(-2px);
+            background: var(--primary-dark);
+        }
+
+        .admin-btn.danger {
+            background: #ef4444;
+        }
+
+        .admin-btn.danger:hover {
+            background: #dc2626;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-box {
+            background: var(--surface-alt);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+
+        .stat-box h4 {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .stat-box span {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .site-title {
+                font-size: 2.5rem;
+            }
+
+            .nav-group {
+                flex-wrap: wrap;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .slideshow-controls {
+                flex-wrap: wrap;
+                justify-content: center;
+                width: 90%;
+            }
+
+            .admin-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+    <header class="hero">
+        <div class="hero-content">
+            <h1 class="site-title">3D Design Awards</h1>
+            <p class="site-description">Vote for the most innovative and creative 3D designs</p>
+        </div>
+    </header>
+
+    <nav class="nav-bar">
+        <div class="container nav-content">
+            <div class="nav-group">
+                <button class="nav-btn active" onclick="setView('gallery')">
+                    <i class="fas fa-th"></i> Gallery
+                </button>
+                <button class="nav-btn" onclick="setView('slideshow')">
+                    <i class="fas fa-play"></i> Slideshow
+                </button>
+            </div>
+            <div class="nav-group">
+                <button class="nav-btn" id="adminButton">
+                    <i class="fas fa-lock"></i> Admin
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Admin Panel -->
+        <div id="adminPanel" class="admin-panel">
+<div class="admin-grid">
+                <div class="admin-header">
+                    <h2 class="admin-title">Admin Control Panel</h2>
+                    <div id="adminStatus" class="admin-status">Not logged in</div>
+                </div>
+                
+                <!-- Login Section -->
+                <div id="adminLogin" class="admin-section">
+                    <input type="password" id="adminPassword" class="admin-input" placeholder="Enter admin password">
+                    <button onclick="verifyAdmin()" class="admin-btn">
+                        <i class="fas fa-lock"></i> Login
+                    </button>
+                </div>
+
+                <!-- Admin Controls (visible after login) -->
+                <div id="adminControls" class="admin-section" style="display: none;">
+                    <div class="admin-tools">
+                        <button onclick="document.getElementById('fileUpload').click()" class="admin-btn">
+                            <i class="fas fa-upload"></i> Upload Images
+                        </button>
+                        <button onclick="exportResults()" class="admin-btn">
+                            <i class="fas fa-download"></i> Export Results
+                        </button>
+                        <button onclick="resetVotes()" class="admin-btn danger">
+                            <i class="fas fa-trash"></i> Reset All Votes
+                        </button>
+                        <button onclick="clearAllProjects()" class="admin-btn danger">
+                            <i class="fas fa-trash-alt"></i> Clear All Projects
+                        </button>
+                    </div>
+                    
+                    <input type="file" id="fileUpload" multiple accept="image/*" style="display: none">
+                    
+                    <div class="admin-stats">
+                        <div class="stat-box">
+                            <h4>Total Projects</h4>
+                            <span id="totalProjects">0</span>
+                        </div>
+                        <div class="stat-box">
+                            <h4>Total Votes</h4>
+                            <span id="totalVotes">0</span>
+                        </div>
+                        <div class="stat-box">
+                            <h4>Categories</h4>
+                            <span id="categoryStats">-</span>
+                        </div>
+                    </div>
+
+                    <div id="projectManagement" class="project-list">
+                        <h3>Manage Projects</h3>
+                        <div class="project-grid" id="adminProjectList">
+                            <!-- Projects will be listed here -->
+                        </div>
+                    </div>
+
+                    <div id="voteResults" class="vote-results">
+                        <h3>Vote Results</h3>
+                        <!-- Vote results will be displayed here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Filters -->
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterCategory('all')">All Designs</button>
+            <button class="filter-btn" onclick="filterCategory('character')">Characters</button>
+            <button class="filter-btn" onclick="filterCategory('transport')">Transportation</button>
+        </div>
+
+        <!-- Gallery View -->
+        <div id="galleryView" class="gallery-view">
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Gallery items will be dynamically added here -->
+            </div>
+        </div>
+
+        <!-- Slideshow View -->
+        <div id="slideshowView" class="slideshow-view">
+            <div class="slideshow-content">
+                <img id="slideshowImage" class="slideshow-image" src="" alt="Slideshow Image">
+                <div id="slideshowInfo" class="slideshow-info"></div>
+            </div>
+            <div class="slideshow-controls">
+                <button class="slideshow-btn" onclick="previousSlide()">
+                    <i class="fas fa-backward"></i>
+                </button>
+                <button class="slideshow-btn" onclick="toggleSlideshow()">
+                    <i id="playPauseIcon" class="fas fa-play"></i>
+                </button>
+                <button class="slideshow-btn" onclick="nextSlide()">
+                    <i class="fas fa-forward"></i>
+                </button>
+                <div class="timer-control">
+                    <input type="number" id="intervalInput" value="3" min="1" max="10" 
+                           onchange="updateInterval(this.value)" 
+                           style="width: 60px; padding: 0.5rem; border-radius: 0.25rem;">
+                    <span style="margin-left: 0.5rem">seconds</span>
+                </div>
+                <button class="slideshow-btn" onclick="toggleFullscreen()">
+                    <i class="fas fa-expand"></i>
+                </button>
+                <button class="slideshow-btn" onclick="setView('gallery')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const ADMIN_PASSWORD = 'mrmerolasecretpassword';
+        let projects = JSON.parse(localStorage.getItem('projects')) || [];
+        let currentSlide = 0;
+        let slideshowInterval;
+        let intervalTime = 3000;
+        let isPlaying = false;
+        let currentFilter = 'all';
+        
+        // Initialize projects with voting data if not present
+        projects = projects.map(project => ({
+            ...project,
+            votes: project.votes || 0
+        }));
+
+        // Admin Button Event Listener
+        document.getElementById('adminButton').addEventListener('click', function() {
+            const adminPanel = document.getElementById('adminPanel');
+            if (adminPanel) {
+                adminPanel.style.display = adminPanel.style.display === 'none' ? 'block' : 'none';
+                if (isAdmin()) updateVoteResults();
+            }
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const adminPanel = document.getElementById('adminPanel');
+            if (adminPanel) {
+                adminPanel.style.display = 'none';
+            }
+            
+            if (isAdmin()) {
+                document.getElementById('adminLogin').style.display = 'none';
+                document.getElementById('adminControls').style.display = 'block';
+                document.getElementById('adminStatus').textContent = 'Logged in as Admin';
+                document.getElementById('adminStatus').classList.add('logged-in');
+                updateAdminDashboard();
+            }
+            
+            updateGallery();
+        });
+
+        // Voting System
+        function hasVoted(category) {
+            return localStorage.getItem(`voted_${category}`) === 'true';
+        }
+
+        function vote(index) {
+            const project = projects[index];
+            if (hasVoted(project.category)) {
+                showNotification('You have already voted in this category!', 'error');
+                return;
+            }
+
+            projects[index].votes = (projects[index].votes || 0) + 1;
+            localStorage.setItem('projects', JSON.stringify(projects));
+            localStorage.setItem(`voted_${project.category}`, 'true');
+            
+            showNotification('Vote recorded successfully!');
+            updateGallery();
+            if (isAdmin()) updateVoteResults();
+        }
+
+        function updateVoteResults() {
+            if (!isAdmin()) return;
+            
+            const resultsDiv = document.getElementById('voteResults');
+            resultsDiv.style.display = 'block';
+            
+            const categories = ['character', 'transport'];
+            let resultsHTML = '';
+            
+            categories.forEach(category => {
+                const categoryProjects = projects.filter(p => p.category === category);
+                resultsHTML += `<h4 class="mt-4">${category.charAt(0).toUpperCase() + category.slice(1)} Category:</h4>`;
+                
+                categoryProjects
+                    .sort((a, b) => (b.votes || 0) - (a.votes || 0))
+                    .forEach(project => {
+                        resultsHTML += `
+                            <div class="vote-count">
+                                ${project.filename}: ${project.votes || 0} votes
+                            </div>
+                        `;
+                    });
+            });
+            
+            resultsDiv.innerHTML = resultsHTML;
+        }
+
+        // Admin Functions
+        function isAdmin() {
+            return sessionStorage.getItem('isAdmin') === 'true';
+        }
+
+        function verifyAdmin() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                sessionStorage.setItem('isAdmin', 'true');
+                document.getElementById('adminLogin').style.display = 'none';
+                document.getElementById('adminControls').style.display = 'block';
+                document.getElementById('adminStatus').textContent = 'Logged in as Admin';
+                document.getElementById('adminStatus').classList.add('logged-in');
+                updateAdminDashboard();
+                showNotification('Admin access granted!');
+            } else {
+                showNotification('Invalid password!', 'error');
+            }
+        }
+
+        // File Upload
+        document.getElementById('fileUpload').addEventListener('change', handleFileUpload);
+
+        function handleFileUpload(event) {
+            const files = event.target.files;
+            let processed = 0;
+            
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const category = prompt(`Category for ${file.name} (character/transport):`, 'character');
+                    if (category && ['character', 'transport'].includes(category)) {
+                        projects.push({
+                            image: e.target.result,
+                            filename: file.name,
+                            category: category,
+                            votes: 0,
+                            uploadDate: new Date().toISOString()
+                        });
+                        processed++;
+                        
+                        if (processed === files.length) {
+                            localStorage.setItem('projects', JSON.stringify(projects));
+                            updateGallery();
+                            showNotification(`Successfully uploaded ${processed} files!`);
+                        }
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Gallery View
+        function updateGallery() {
+            const filteredProjects = currentFilter === 'all' 
+                ? projects 
+                : projects.filter(p => p.category === currentFilter);
+
+            const gallery = document.getElementById('galleryGrid');
+            gallery.innerHTML = filteredProjects.map((project, index) => `
+                <div class="gallery-item">
+                    <img class="gallery-image" src="${project.image}" alt="${project.filename}" 
+                         onclick="openSlideshow(${projects.indexOf(project)})">
+                    <div class="gallery-content">
+                        <h3 class="gallery-title">${project.filename}</h3>
+                        <p class="gallery-category">${project.category.charAt(0).toUpperCase() + project.category.slice(1)}</p>
+                        ${isAdmin() ? `<div class="vote-count">Votes: ${project.votes || 0}</div>` : ''}
+                        <button class="vote-btn" onclick="vote(${projects.indexOf(project)})"
+                                ${hasVoted(project.category) ? 'disabled' : ''}>
+                            ${hasVoted(project.category) ? 'Already Voted' : 'Vote for This Design'}
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterCategory(category) {
+            currentFilter = category;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.toLowerCase().includes(category));
+            });
+            updateGallery();
+        }
+
+        // Slideshow Functions
+        function setView(view) {
+            const galleryView = document.getElementById('galleryView');
+            const slideshowView = document.getElementById('slideshowView');
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.toLowerCase().includes(view));
+            });
+
+            if (view === 'gallery') {
+                slideshowView.style.display = 'none';
+                galleryView.style.display = 'block';
+                stopSlideshow();
+            } else {
+                slideshowView.style.display = 'block';
+                galleryView.style.display = 'none';
+                if (!isPlaying) updateSlideshow();
+            }
+        }
+
+        function openSlideshow(index) {
+            currentSlide = index;
+            setView('slideshow');
+            updateSlideshow();
+        }
+
+        function updateSlideshow() {
+            if (projects.length === 0) return;
+            
+            const filteredProjects = currentFilter === 'all'
+                ? projects
+                : projects.filter(p => p.category === currentFilter);
+
+            if (filteredProjects.length === 0) {
+                setView('gallery');
+                showNotification('No projects in this category');
+                return;
+            }
+
+            const project = projects[currentSlide];
+            const image = document.getElementById('slideshowImage');
+            const info = document.getElementById('slideshowInfo');
+            
+            image.src = project.image;
+            image.alt = project.filename;
+            info.innerHTML = `
+                <h3>${project.filename}</h3>
+                <p>${project.category.charAt(0).toUpperCase() + project.category.slice(1)}</p>
+                ${isAdmin() ? `<p>Votes: ${project.votes || 0}</p>` : ''}
+            `;
+        }
+
+        function nextSlide() {
+            const filteredProjects = currentFilter === 'all'
+                ? projects
+                : projects.filter(p => p.category === currentFilter);
+            
+            const currentIndex = filteredProjects.indexOf(projects[currentSlide]);
+            currentSlide = projects.indexOf(filteredProjects[(currentIndex + 1) % filteredProjects.length]);
+            updateSlideshow();
+        }
+
+        function previousSlide() {
+            const filteredProjects = currentFilter === 'all'
+                ? projects
+                : projects.filter(p => p.category === currentFilter);
+            
+            const currentIndex = filteredProjects.indexOf(projects[currentSlide]);
+            currentSlide = projects.indexOf(filteredProjects[(currentIndex - 1 + filteredProjects.length) % filteredProjects.length]);
+            updateSlideshow();
+        }
+
+        function toggleSlideshow() {
+            const icon = document.getElementById('playPauseIcon');
+            if (isPlaying) {
+                stopSlideshow();
+                icon.classList.replace('fa-pause', 'fa-play');
+            } else {
+                startSlideshow();
+                icon.classList.replace('fa-play', 'fa-pause');
+            }
+        }
+
+        function startSlideshow() {
+            isPlaying = true;
+            slideshowInterval = setInterval(nextSlide, intervalTime);
+        }
+
+        function stopSlideshow() {
+            isPlaying = false;
+            clearInterval(slideshowInterval);
+        }
+
+        function updateInterval(seconds) {
+            intervalTime = seconds * 1000;
+            if (isPlaying) {
+                stopSlideshow();
+                startSlideshow();
+            }
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        function removeProject(index) {
+            if (!isAdmin()) {
+                showNotification('Admin access required!', 'error');
+                return;
+            }
+
+const project = projects[index];
+            if (confirm(`Are you sure you want to remove "${project.filename}"?`)) {
+                projects.splice(index, 1);
+                localStorage.setItem('projects', JSON.stringify(projects));
+                updateGallery();
+                updateAdminDashboard();
+                showNotification('Project removed successfully');
+            }
+        }
+
+        function editProject(index) {
+            if (!isAdmin()) return;
+            
+            const project = projects[index];
+            const newName = prompt('Enter new name for the project:', project.filename);
+            const newCategory = prompt('Enter new category (character/transport):', project.category);
+            
+            if (newName && newCategory && ['character', 'transport'].includes(newCategory)) {
+                projects[index] = {
+                    ...project,
+                    filename: newName,
+                    category: newCategory
+                };
+                
+                localStorage.setItem('projects', JSON.stringify(projects));
+                updateGallery();
+                updateAdminDashboard();
+                showNotification('Project updated successfully');
+            }
+        }
+
+        function resetVotes() {
+            if (!isAdmin()) return;
+            
+            if (confirm('Are you sure you want to reset all votes? This cannot be undone.')) {
+                projects = projects.map(project => ({
+                    ...project,
+                    votes: 0
+                }));
+                
+                localStorage.removeItem('voted_character');
+                localStorage.removeItem('voted_transport');
+                localStorage.setItem('projects', JSON.stringify(projects));
+                
+                updateGallery();
+                updateAdminDashboard();
+                showNotification('All votes have been reset');
+            }
+        }
+
+        function clearAllProjects() {
+            if (!isAdmin()) return;
+            
+            if (confirm('Are you sure you want to remove all projects? This cannot be undone.')) {
+                projects = [];
+                localStorage.setItem('projects', JSON.stringify(projects));
+                updateGallery();
+                updateAdminDashboard();
+                showNotification('All projects have been removed');
+            }
+        }
+
+        function exportResults() {
+            if (!isAdmin()) return;
+
+            const results = {
+                timestamp: new Date().toISOString(),
+                totalProjects: projects.length,
+                categories: {
+                    character: projects.filter(p => p.category === 'character').length,
+                    transport: projects.filter(p => p.category === 'transport').length
+                },
+                voteResults: projects.map(p => ({
+                    filename: p.filename,
+                    category: p.category,
+                    votes: p.votes || 0
+                }))
+            };
+
+            const blob = new Blob([JSON.stringify(results, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `vote-results-${new Date().toISOString().slice(0,10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function updateAdminDashboard() {
+            if (!isAdmin()) return;
+
+            // Update statistics
+            document.getElementById('totalProjects').textContent = projects.length;
+            document.getElementById('totalVotes').textContent = projects.reduce((sum, p) => sum + (p.votes || 0), 0);
+            document.getElementById('categoryStats').innerHTML = `
+                Character: ${projects.filter(p => p.category === 'character').length}<br>
+                Transport: ${projects.filter(p => p.category === 'transport').length}
+            `;
+
+            // Update project management list
+            const projectList = document.getElementById('adminProjectList');
+            projectList.innerHTML = projects.map((project, index) => `
+                <div class="project-card">
+                    <img src="${project.image}" alt="${project.filename}">
+                    <div class="project-card-content">
+                        <h4>${project.filename}</h4>
+                        <p>${project.category} - ${project.votes || 0} votes</p>
+                        <div class="project-card-actions">
+                            <button onclick="editProject(${index})" class="project-card-btn">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button onclick="removeProject(${index})" class="project-card-btn remove">
+                                <i class="fas fa-trash"></i> Remove
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Update vote results
+            updateVoteResults();
+        }
+
+        // Utility Functions
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            notification.style.position = 'fixed';
+            notification.style.top = '20px';
+            notification.style.right = '20px';
+            notification.style.padding = '1rem 2rem';
+            notification.style.borderRadius = '0.5rem';
+            notification.style.background = type === 'success' ? '#10b981' : '#ef4444';
+            notification.style.color = 'white';
+            notification.style.zIndex = '9999';
+            notification.style.animation = 'slideIn 0.3s ease-out';
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', (e) => {
+            if (document.getElementById('slideshowView').style.display === 'block') {
+                switch(e.key) {
+                    case 'ArrowLeft':
+                        previousSlide();
+                        break;
+                    case 'ArrowRight':
+                        nextSlide();
+                        break;
+                    case ' ':
+                        toggleSlideshow();
+                        e.preventDefault();
+                        break;
+                    case 'Escape':
+                        if (document.fullscreenElement) {
+                            document.exitFullscreen();
+                        } else {
+                            setView('gallery');
+                        }
+                        break;
+                }
+            }
+        });
+
+        // Initialize
+        updateGallery();
+    </script>
+</body>
+</html>
