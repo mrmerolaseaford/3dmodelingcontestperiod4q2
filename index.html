@@ -499,6 +499,9 @@
                         <button onclick="clearAllProjects()" class="admin-btn danger">
                             <i class="fas fa-trash-alt"></i> Clear All Projects
                         </button>
+    			<button onclick="adminLogout()" class="admin-btn danger">
+        			<i class="fas fa-sign-out-alt"></i> Logout
+    			</button>
                     </div>
                     
                     <input type="file" id="fileUpload" multiple accept="image/*" style="display: none">
@@ -569,6 +572,15 @@
                            style="width: 60px; padding: 0.5rem; border-radius: 0.25rem;">
                     <span style="margin-left: 0.5rem">seconds</span>
                 </div>
+		<div class="category-control" style="display: flex; align-items: center; gap: 0.5rem;">
+    			<select id="slideshowCategory" 
+            			onchange="changeSlideshowCategory(this.value)"
+            			style="padding: 0.5rem; border-radius: 0.25rem; background: var(--surface-alt); color: var(--text); border: none;">
+        			<option value="all">All Projects</option>
+        			<option value="character">Characters</option>
+        			<option value="transport">Transportation</option>
+    			</select>
+		</div>
                 <button class="slideshow-btn" onclick="toggleFullscreen()">
                     <i class="fas fa-expand"></i>
                 </button>
@@ -579,7 +591,7 @@
         </div>
     </main>
 
-    <script>
+<script>
         const ADMIN_PASSWORD = 'mrmerolasecretpassword';
         let projects = JSON.parse(localStorage.getItem('projects')) || [];
         let currentSlide = 0;
@@ -674,6 +686,19 @@
             return sessionStorage.getItem('isAdmin') === 'true';
         }
 
+        function adminLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('isAdmin');
+                document.getElementById('adminLogin').style.display = 'block';
+                document.getElementById('adminControls').style.display = 'none';
+                document.getElementById('adminStatus').textContent = 'Not logged in';
+                document.getElementById('adminStatus').classList.remove('logged-in');
+                document.getElementById('adminPassword').value = '';
+                updateGallery(); // Refresh gallery to hide vote counts
+                showNotification('Logged out successfully');
+            }
+        }
+
         function verifyAdmin() {
             const password = document.getElementById('adminPassword').value;
             if (password === ADMIN_PASSWORD) {
@@ -750,7 +775,28 @@
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.textContent.toLowerCase().includes(category));
             });
+            // Sync the slideshow category dropdown if it exists
+            const slideshowCategory = document.getElementById('slideshowCategory');
+            if (slideshowCategory) {
+                slideshowCategory.value = category;
+            }
             updateGallery();
+        }
+
+        function changeSlideshowCategory(category) {
+            currentFilter = category;
+            // Reset to first slide of new category
+            const filteredProjects = category === 'all' 
+                ? projects 
+                : projects.filter(p => p.category === category);
+            
+            if (filteredProjects.length > 0) {
+                currentSlide = projects.indexOf(filteredProjects[0]);
+                updateSlideshow();
+            } else {
+                showNotification('No projects in this category');
+                setView('gallery');
+            }
         }
 
         // Slideshow Functions
@@ -769,6 +815,8 @@
             } else {
                 slideshowView.style.display = 'block';
                 galleryView.style.display = 'none';
+                // Sync the slideshow category with current filter
+                document.getElementById('slideshowCategory').value = currentFilter;
                 if (!isPlaying) updateSlideshow();
             }
         }
@@ -868,7 +916,7 @@
                 return;
             }
 
-const project = projects[index];
+            const project = projects[index];
             if (confirm(`Are you sure you want to remove "${project.filename}"?`)) {
                 projects.splice(index, 1);
                 localStorage.setItem('projects', JSON.stringify(projects));
