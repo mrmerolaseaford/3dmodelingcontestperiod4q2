@@ -629,6 +629,11 @@
                 document.getElementById('adminStatus').classList.add('logged-in');
                 updateAdminDashboard();
             }
+
+    const slideshowCategory = document.getElementById('slideshowCategory');
+    if (slideshowCategory) {
+        slideshowCategory.value = currentFilter;
+    }
             
             updateGallery();
         });
@@ -686,18 +691,20 @@
             return sessionStorage.getItem('isAdmin') === 'true';
         }
 
-        function adminLogout() {
-            if (confirm('Are you sure you want to logout?')) {
-                sessionStorage.removeItem('isAdmin');
-                document.getElementById('adminLogin').style.display = 'block';
-                document.getElementById('adminControls').style.display = 'none';
-                document.getElementById('adminStatus').textContent = 'Not logged in';
-                document.getElementById('adminStatus').classList.remove('logged-in');
-                document.getElementById('adminPassword').value = '';
-                updateGallery(); // Refresh gallery to hide vote counts
-                showNotification('Logged out successfully');
-            }
-        }
+function adminLogout() {
+    if (confirm('Are you sure you want to logout?')) {
+        sessionStorage.removeItem('isAdmin');
+        const adminPanel = document.getElementById('adminPanel');
+        adminPanel.style.display = 'none';  // Add this line
+        document.getElementById('adminLogin').style.display = 'block';
+        document.getElementById('adminControls').style.display = 'none';
+        document.getElementById('adminStatus').textContent = 'Not logged in';
+        document.getElementById('adminStatus').classList.remove('logged-in');
+        document.getElementById('adminPassword').value = '';
+        updateGallery();
+        showNotification('Logged out successfully');
+    }
+}
 
         function verifyAdmin() {
             const password = document.getElementById('adminPassword').value;
